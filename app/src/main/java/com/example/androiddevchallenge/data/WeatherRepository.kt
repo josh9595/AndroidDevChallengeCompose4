@@ -98,7 +98,7 @@ class WeatherRepository {
                 "Friday",
                 listOf(
                     ForecastHour(
-                        "09:00",
+                        "06:00",
                         6,
                         Weather.CLEAR
                     ),

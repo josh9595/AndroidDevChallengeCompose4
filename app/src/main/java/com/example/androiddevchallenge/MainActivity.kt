@@ -19,18 +19,17 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.paddingFromBaseline
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
@@ -44,6 +43,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDownward
 import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -54,10 +55,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import com.example.androiddevchallenge.data.Forecast
+import com.example.androiddevchallenge.data.ForecastDay
 import com.example.androiddevchallenge.data.ForecastHour
 import com.example.androiddevchallenge.data.WeatherRepository
 import com.example.androiddevchallenge.ui.theme.MyTheme
 import com.example.androiddevchallenge.ui.theme.clearBackground
+import com.example.androiddevchallenge.ui.theme.selectedBackground
+import com.example.androiddevchallenge.ui.theme.transparentBackground
 import dev.chrisbanes.accompanist.insets.ProvideWindowInsets
 
 class MainActivity : AppCompatActivity() {
@@ -66,7 +70,6 @@ class MainActivity : AppCompatActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         val forecast = WeatherRepository().getForecast()
-
 
         setContent {
             MyTheme {
@@ -78,9 +81,13 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-// Start building your app here!
 @Composable
-fun MyApp(forecast: Forecast) {
+fun MyApp(forecast: Forecast, weatherViewModel: WeatherViewModel = WeatherViewModel()) {
+    val selectedDay: String by weatherViewModel.selectedDay.observeAsState("Today")
+    val selectedDayHours: List<ForecastHour> by weatherViewModel.selectedDayHours.observeAsState(listOf())
+
+    weatherViewModel.setSelectedDayHours(forecast.days[0].forecastDateList)
+
     Surface(color = clearBackground) {
         Box(modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.BottomCenter) {
@@ -128,18 +135,19 @@ fun MyApp(forecast: Forecast) {
                     Image(painter = painterResource(id = R.drawable.clear), contentDescription = null, modifier = Modifier.size(120.dp))
                 }
                 LazyRow(
-                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp),
+                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp),
                     horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                     items(forecast.days) { day ->
-                        DayButton(day.dateReadable)
+                        DayButton(day, selectedDay == day.dateReadable, weatherViewModel::setSelectedDay, weatherViewModel::setSelectedDayHours)
                     }
                 }
 
                 Row (
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                     modifier = Modifier
+                        .padding(0.dp, 16.dp, 0.dp, 0.dp)
                         .horizontalScroll(rememberScrollState())){
-                    forecast.days[0].forecastDateList.forEachIndexed { index, hour ->
+                    selectedDayHours.forEachIndexed { index, hour ->
                         HourForecast(hour, index, forecast.days[0].forecastDateList.size)
                     }
                 }
@@ -149,11 +157,19 @@ fun MyApp(forecast: Forecast) {
 }
 
 @Composable
-fun DayButton(dayText: String) {
-    Row() {
+fun DayButton(day: ForecastDay, selected: Boolean, setSelectedDay: (String) -> Unit, setSelectedDayHours: (List<ForecastHour>) -> Unit) {
+    Row(
+        modifier = Modifier
+            .background(if (selected) selectedBackground else transparentBackground)
+            .clickable {
+                setSelectedDay(day.dateReadable)
+                setSelectedDayHours(day.forecastDateList)
+            }
+    ) {
         Text(
-            text = dayText,
-            style = MaterialTheme.typography.body1
+            text = day.dateReadable,
+            style = MaterialTheme.typography.body1,
+            modifier = Modifier.padding(8.dp)
         )
     }
 }
@@ -181,7 +197,6 @@ fun HourForecast(hour: ForecastHour, index: Int, size: Int) {
             textAlign = TextAlign.Center
         )
     }
-    
 }
 
 @Preview("Light Theme", widthDp = 360, heightDp = 640)
