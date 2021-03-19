@@ -27,8 +27,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -45,6 +47,7 @@ import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -62,6 +65,8 @@ import com.example.androiddevchallenge.ui.theme.MyTheme
 import com.example.androiddevchallenge.ui.theme.clearBackground
 import com.example.androiddevchallenge.ui.theme.selectedBackground
 import com.example.androiddevchallenge.ui.theme.transparentBackground
+import com.example.androiddevchallenge.util.Pager
+import com.example.androiddevchallenge.util.PagerState
 import dev.chrisbanes.accompanist.insets.ProvideWindowInsets
 
 class MainActivity : AppCompatActivity() {
@@ -69,12 +74,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
-        val forecast = WeatherRepository().getForecast()
+        val forecasts = WeatherRepository().getForecasts()
 
         setContent {
             MyTheme {
                 ProvideWindowInsets {
-                    MyApp(forecast)
+                    MyApp(forecasts)
                 }
             }
         }
@@ -82,74 +87,98 @@ class MainActivity : AppCompatActivity() {
 }
 
 @Composable
-fun MyApp(forecast: Forecast, weatherViewModel: WeatherViewModel = WeatherViewModel()) {
-    val selectedDay: String by weatherViewModel.selectedDay.observeAsState("Today")
-    val selectedDayHours: List<ForecastHour> by weatherViewModel.selectedDayHours.observeAsState(listOf())
+fun MyApp(forecasts: List<Forecast>) {
+    val pagerState = remember { PagerState() }
+    val selectedBackground = forecasts[pagerState.currentPage].overview.weather.colour
+    val selectedSea = forecasts[pagerState.currentPage].overview.weather.seaColour
 
-    weatherViewModel.setSelectedDayHours(forecast.days[0].forecastDateList)
-
-    Surface(color = clearBackground) {
+    pagerState.maxPage = (forecasts.size - 1).coerceAtLeast(0)
+    Surface(color = selectedBackground) {
         Box(modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.BottomCenter) {
-            Image(
-                painter = painterResource(id = R.drawable.graphic_clear),
-                contentDescription = null,
-                contentScale = FillWidth,
-                modifier = Modifier.fillMaxWidth(),
-                alignment = Alignment.BottomCenter
-            )
-            Column(modifier = Modifier.fillMaxSize()) {
-                Row(modifier = Modifier.padding(16.dp, 32.dp, 16.dp, 0.dp)) {
-                    Text(text = forecast.name, style = MaterialTheme.typography.h2)
-                }
+            Row(modifier = Modifier.fillMaxWidth().height(160.dp).background(selectedSea)) {
 
-                Row(modifier = Modifier
-                    .padding(16.dp, 0.dp, 16.dp, 0.dp)
-                    .fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                    Text(text = forecast.overview.temp.toString()+"°", style = MaterialTheme.typography.h1)
-                    Column(Modifier.padding(0.dp, 16.dp, 0.dp, 0.dp)) {
-                        Row {
-                            Icon(
-                                Icons.Default.ArrowUpward,
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .padding(0.dp, 16.dp, 0.dp, 0.dp)
-                                    .width(28.dp),
-                                tint = Color.White
-                            )
-                            Text(text = forecast.overview.tempHigh.toString()+"°", style = MaterialTheme.typography.h3)
-                        }
-                        Row {
-                            Icon(
-                                Icons.Default.ArrowDownward,
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .padding(0.dp, 16.dp, 0.dp, 0.dp)
-                                    .width(28.dp),
-                                tint = Color.White
-                            )
-                            Text(text = forecast.overview.tempLow.toString()+"°", style = MaterialTheme.typography.h3)
-                        }
+            }
+            Pager(
+                state = pagerState,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight()
+            ) {
+                WeatherPageItem(
+                    forecast = forecasts[page]
+                )
+            }
+        }
+    }
+}
 
-                    }
-                    Image(painter = painterResource(id = R.drawable.clear), contentDescription = null, modifier = Modifier.size(120.dp))
-                }
-                LazyRow(
-                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                    items(forecast.days) { day ->
-                        DayButton(day, selectedDay == day.dateReadable, weatherViewModel::setSelectedDay, weatherViewModel::setSelectedDayHours)
-                    }
-                }
+@Composable
+fun WeatherPageItem(forecast: Forecast, weatherViewModel: WeatherViewModel = WeatherViewModel()) {
+    val selectedDay: String by weatherViewModel.selectedDay.observeAsState("Today")
+    val selectedDayHours: List<ForecastHour> by weatherViewModel.selectedDayHours.observeAsState(listOf())
+    weatherViewModel.setSelectedDayHours(forecast.days[0].forecastDateList)
 
-                Row (
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    modifier = Modifier
-                        .padding(0.dp, 16.dp, 0.dp, 0.dp)
-                        .horizontalScroll(rememberScrollState())){
-                    selectedDayHours.forEachIndexed { index, hour ->
-                        HourForecast(hour, index, forecast.days[0].forecastDateList.size)
+    Box(modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.BottomCenter) {
+        Image(
+            painter = painterResource(id = forecast.overview.weather.graphic),
+            contentDescription = null,
+            contentScale = FillWidth,
+            modifier = Modifier.fillMaxWidth(),
+            alignment = Alignment.BottomCenter
+        )
+        Column(modifier = Modifier.fillMaxSize()) {
+            Row(modifier = Modifier.padding(16.dp, 32.dp, 16.dp, 0.dp)) {
+                Text(text = forecast.name, style = MaterialTheme.typography.h2)
+            }
+
+            Row(modifier = Modifier
+                .padding(16.dp, 0.dp, 16.dp, 0.dp)
+                .fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                Text(text = forecast.overview.temp.toString()+"°", style = MaterialTheme.typography.h1)
+                Column(Modifier.padding(0.dp, 16.dp, 0.dp, 0.dp)) {
+                    Row {
+                        Icon(
+                            Icons.Default.ArrowUpward,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .padding(0.dp, 16.dp, 0.dp, 0.dp)
+                                .width(28.dp),
+                            tint = Color.White
+                        )
+                        Text(text = forecast.overview.tempHigh.toString()+"°", style = MaterialTheme.typography.h3)
                     }
+                    Row {
+                        Icon(
+                            Icons.Default.ArrowDownward,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .padding(0.dp, 16.dp, 0.dp, 0.dp)
+                                .width(28.dp),
+                            tint = Color.White
+                        )
+                        Text(text = forecast.overview.tempLow.toString()+"°", style = MaterialTheme.typography.h3)
+                    }
+
+                }
+                Image(painter = painterResource(id = forecast.overview.weather.icon), contentDescription = null, modifier = Modifier.size(120.dp))
+            }
+            LazyRow(
+                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                items(forecast.days) { day ->
+                    DayButton(day, selectedDay == day.dateReadable, weatherViewModel::setSelectedDay, weatherViewModel::setSelectedDayHours)
+                }
+            }
+
+            Row (
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                modifier = Modifier
+                    .padding(0.dp, 16.dp, 0.dp, 0.dp)
+                    .horizontalScroll(rememberScrollState())){
+                selectedDayHours.forEachIndexed { index, hour ->
+                    HourForecast(hour, index, forecast.days[0].forecastDateList.size)
                 }
             }
         }
@@ -177,7 +206,12 @@ fun DayButton(day: ForecastDay, selected: Boolean, setSelectedDay: (String) -> U
 @Composable
 fun HourForecast(hour: ForecastHour, index: Int, size: Int) {
     Column(modifier = Modifier
-        .padding(if (index == 0) 16.dp else 0.dp, 0.dp, if (index == size-1) 16.dp else 0.dp, 0.dp)
+        .padding(
+            if (index == 0) 16.dp else 0.dp,
+            0.dp,
+            if (index == size - 1) 16.dp else 0.dp,
+            0.dp
+        )
         .width(50.dp)) {
         Text(
             text = hour.temp.toString()+"°",
@@ -186,7 +220,7 @@ fun HourForecast(hour: ForecastHour, index: Int, size: Int) {
             textAlign = TextAlign.Center
         )
         Image(
-            painter = painterResource(id = R.drawable.clear),
+            painter = painterResource(id = hour.weather.iconSmall),
             contentDescription = null,
             modifier = Modifier.width(50.dp)
         )
@@ -203,6 +237,6 @@ fun HourForecast(hour: ForecastHour, index: Int, size: Int) {
 @Composable
 fun LightPreview() {
     MyTheme {
-        MyApp(WeatherRepository().getForecast())
+        MyApp(WeatherRepository().getForecasts())
     }
 }
