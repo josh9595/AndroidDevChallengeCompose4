@@ -18,6 +18,9 @@ package com.example.androiddevchallenge
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -93,10 +96,19 @@ fun MyApp(forecasts: List<Forecast>) {
     val selectedSea = forecasts[pagerState.currentPage].overview.weather.seaColour
 
     pagerState.maxPage = (forecasts.size - 1).coerceAtLeast(0)
-    Surface(color = selectedBackground) {
+    Surface(color = animateColorAsState(
+        selectedBackground,
+        spring(stiffness = Spring.StiffnessVeryLow)
+    ).value) {
         Box(modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.BottomCenter) {
-            Row(modifier = Modifier.fillMaxWidth().height(160.dp).background(selectedSea)) {
+            Row(modifier = Modifier
+                .fillMaxWidth()
+                .height(160.dp)
+                .background(animateColorAsState(
+                    selectedSea,
+                    spring(stiffness = Spring.StiffnessVeryLow)
+                ).value)) {
 
             }
             Pager(
