@@ -52,7 +52,7 @@ val typography = Typography(
     body1 = TextStyle(
         fontFamily = bree_serif,
         fontWeight = FontWeight.Normal,
-        fontSize = 24.sp,
+        fontSize = 20.sp,
         color = Color.White
     ),
     body2 = TextStyle(

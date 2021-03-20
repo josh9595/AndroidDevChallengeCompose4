@@ -38,6 +38,8 @@ import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.Measurable
 import androidx.compose.ui.layout.ParentDataModifier
 import androidx.compose.ui.unit.Density
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
@@ -72,7 +74,15 @@ class PagerState(
         get() = _currentPage
         set(value) {
             _currentPage = value.coerceIn(minPage, maxPage)
+            setCurrentPageState(_currentPage)
         }
+
+    private var _currentPageState = MutableLiveData(0)
+    var currentPageState: LiveData<Int> = _currentPageState
+
+    fun setCurrentPageState(selected: Int) {
+        _currentPageState.value = selected
+    }
 
     enum class SelectionState { Selected, Undecided }
 
