@@ -6,28 +6,32 @@ import androidx.lifecycle.ViewModel
 import com.example.androiddevchallenge.data.ForecastHour
 
 class WeatherViewModel() : ViewModel() {
-    private val _selectedForecast = MutableLiveData("")
-    val selectedForecast: LiveData<String> = _selectedForecast
 
-    private val _selectedDay = MutableLiveData("")
-    val selectedDay: LiveData<String> = _selectedDay
+    private val _selectedDayList = MutableLiveData(listOf<String>())
+    val selectedDayList: LiveData<List<String>> = _selectedDayList
 
-    private val _selectedDayHours = MutableLiveData(listOf<ForecastHour>())
-    val selectedDayHours: LiveData<List<ForecastHour>> = _selectedDayHours
+    private val _selectedHoursList = MutableLiveData(listOf<List<ForecastHour>>())
+    val selectedHoursList: LiveData<List<List<ForecastHour>>> = _selectedHoursList
 
-    fun setSelectedDay(day: String) {
-        if (_selectedDay.value == day){
-            _selectedDay.value = ""
-        } else {
-            _selectedDay.value = day
-        }
+    fun initLists(pages: Int) {
+        _selectedDayList.value = List(pages) { "" }
+        _selectedHoursList.value = List(pages) { emptyList() }
     }
 
-    fun setSelectedDayHours(hours: List<ForecastHour>) {
-        if (_selectedDay.value == ""){
-            _selectedDayHours.value = emptyList()
+    fun setSelectedDay(position: Int, day: String) {
+        val mutableList = _selectedDayList.value as MutableList
+        if (mutableList[position] == day) {
+            mutableList[position] = ""
         } else {
-            _selectedDayHours.value = hours
+            mutableList[position] = day
         }
+
+        _selectedDayList.value = mutableList
+    }
+
+    fun setSelectedDayHours(position: Int, hours: List<ForecastHour>) {
+        val mutableList = _selectedHoursList.value as MutableList
+        mutableList[position] = hours
+        _selectedHoursList.value = mutableList
     }
 }

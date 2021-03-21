@@ -74,15 +74,7 @@ class PagerState(
         get() = _currentPage
         set(value) {
             _currentPage = value.coerceIn(minPage, maxPage)
-            setCurrentPageState(_currentPage)
         }
-
-    private var _currentPageState = MutableLiveData(0)
-    var currentPageState: LiveData<Int> = _currentPageState
-
-    fun setCurrentPageState(selected: Int) {
-        _currentPageState.value = selected
-    }
 
     enum class SelectionState { Selected, Undecided }
 

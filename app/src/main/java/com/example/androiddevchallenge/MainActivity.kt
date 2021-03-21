@@ -16,6 +16,7 @@
 package com.example.androiddevchallenge
 
 import android.os.Bundle
+import android.text.format.DateFormat
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.animateColorAsState
@@ -60,7 +61,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
-import androidx.lifecycle.LiveData
 import com.example.androiddevchallenge.data.Forecast
 import com.example.androiddevchallenge.data.ForecastDay
 import com.example.androiddevchallenge.data.ForecastHour
@@ -71,6 +71,9 @@ import com.example.androiddevchallenge.ui.theme.transparentBackground
 import com.example.androiddevchallenge.util.Pager
 import com.example.androiddevchallenge.util.PagerState
 import dev.chrisbanes.accompanist.insets.ProvideWindowInsets
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -91,16 +94,16 @@ class MainActivity : AppCompatActivity() {
 
 @Composable
 fun MyApp(forecasts: List<Forecast>, weatherViewModel: WeatherViewModel = WeatherViewModel()) {
+    weatherViewModel.initLists(forecasts.size)
+
     val pagerState = remember { PagerState() }
     val selectedBackground = forecasts[pagerState.currentPage].overview.weather.colour
     val selectedSea = forecasts[pagerState.currentPage].overview.weather.seaColour
 
-    pagerState.maxPage = (forecasts.size - 1).coerceAtLeast(0)
+    val selectedDayState: List<String> by weatherViewModel.selectedDayList.observeAsState(List(forecasts.size) { "" })
+    val selectedHoursState: List<List<ForecastHour>> by weatherViewModel.selectedHoursList.observeAsState(List(forecasts.size) { emptyList() })
 
-    pagerState.currentPageState.observeForever {
-        weatherViewModel.setSelectedDay("")
-        weatherViewModel.setSelectedDayHours(emptyList())
-    }
+    pagerState.maxPage = (forecasts.size - 1).coerceAtLeast(0)
 
     Surface(color = animateColorAsState(
         selectedBackground,
@@ -111,23 +114,24 @@ fun MyApp(forecasts: List<Forecast>, weatherViewModel: WeatherViewModel = Weathe
             Row(modifier = Modifier
                 .fillMaxWidth()
                 .height(160.dp)
-                .background(animateColorAsState(
-                    selectedSea,
-                    spring(stiffness = Spring.StiffnessVeryLow)
-                ).value)) {
+                .background(
+                    animateColorAsState(
+                        selectedSea,
+                        spring(stiffness = Spring.StiffnessLow)
+                    ).value
+                )) {
 
             }
             Pager(
                 state = pagerState,
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight()
+                    .fillMaxSize()
             ) {
                 WeatherPageItem(
-                    forecast = forecasts[page],
-                    forecasts[pagerState.currentPage].name,
-                    weatherViewModel.selectedDay,
-                    weatherViewModel.selectedDayHours,
+                    page,
+                    forecasts[page],
+                    selectedDayState[page],
+                    selectedHoursState[page],
                     weatherViewModel::setSelectedDay,
                     weatherViewModel::setSelectedDayHours
                 )
@@ -138,16 +142,13 @@ fun MyApp(forecasts: List<Forecast>, weatherViewModel: WeatherViewModel = Weathe
 
 @Composable
 fun WeatherPageItem(
+    page: Int,
     forecast: Forecast,
-    selectedForecastState: String,
-    selectedDay: LiveData<String>,
-    selectedDayHours: LiveData<List<ForecastHour>>,
-    setSelectedDay: (String) -> Unit,
-    setSelectedDayHours: (List<ForecastHour>) -> Unit
+    selectedDay: String,
+    selectedHours: List<ForecastHour>,
+    setSelectedDay: (Int, String) -> Unit,
+    setSelectedDayHours: (Int, List<ForecastHour>) -> Unit
 ) {
-    val selectedDayState: String by selectedDay.observeAsState("")
-    val selectedDayHoursState: List<ForecastHour> by selectedDayHours.observeAsState(listOf())
-
     Box(modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.BottomCenter) {
         Image(
@@ -193,42 +194,54 @@ fun WeatherPageItem(
                 }
                 Image(painter = painterResource(id = forecast.overview.weather.icon), contentDescription = null, modifier = Modifier.size(120.dp))
             }
-            LazyRow(
-                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp)) {
-                items(forecast.days) { day ->
-                    DayButton(
-                        day,
-                        (selectedDayState == day.dateReadable && selectedForecastState == forecast.name),
-                        setSelectedDay,
-                        setSelectedDayHours)
-                }
 
+//            LazyRow(
+//                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp)) {
+//                items(forecast.days) { day ->
+//                    DayButton(
+//                        page,
+//                        day,
+//                        (selectedDay == day.dateReadable),
+//                        setSelectedDay,
+//                        setSelectedDayHours)
+//                }
+//            }
 
-            }
+            Text(
+                text = DateFormat.format("EEEE, d MMMM yyyy", Date()).toString(),
+                modifier = Modifier.padding(16.dp, 0.dp, 0.dp, 0.dp)
+            )
 
-            Row (
+            LazyRow (
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
-                modifier = Modifier
-                    .padding(0.dp, 16.dp, 0.dp, 0.dp)
-                    .horizontalScroll(rememberScrollState())){
-                if (selectedForecastState == forecast.name) {
-                    selectedDayHoursState.forEachIndexed { index, hour ->
-                        HourForecast(hour, index, forecast.days[0].forecastDateList.size)
+                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp)){
+//                if (selectedDay != "") {
+                    items (forecast.days[0].forecastDateList) { hour ->
+                        HourForecast(
+                            hour,
+                            forecast.days[0].forecastDateList.size
+                        )
                     }
-                }
+//                }
             }
         }
     }
 }
 
 @Composable
-fun DayButton(day: ForecastDay, selected: Boolean, setSelectedDay: (String) -> Unit, setSelectedDayHours: (List<ForecastHour>) -> Unit) {
+fun DayButton(
+    page: Int,
+    day: ForecastDay,
+    selected: Boolean,
+    setSelectedDay: (Int, String) -> Unit,
+    setSelectedDayHours: (Int, List<ForecastHour>) -> Unit) {
+
     Row(
         modifier = Modifier
             .background(if (selected) selectedBackground else transparentBackground)
             .clickable {
-                setSelectedDay(day.dateReadable)
-                setSelectedDayHours(day.forecastDateList)
+                setSelectedDayHours(page, day.forecastDateList)
+                setSelectedDay(page, day.dateReadable)
             }
     ) {
         Text(
@@ -240,15 +253,11 @@ fun DayButton(day: ForecastDay, selected: Boolean, setSelectedDay: (String) -> U
 }
 
 @Composable
-fun HourForecast(hour: ForecastHour, index: Int, size: Int) {
-    Column(modifier = Modifier
-        .padding(
-            if (index == 0) 16.dp else 0.dp,
-            0.dp,
-            if (index == size - 1) 16.dp else 0.dp,
-            0.dp
-        )
-        .width(50.dp)) {
+fun HourForecast(
+    hour: ForecastHour,
+    size: Int) {
+
+    Column(modifier = Modifier.width(50.dp)) {
         Text(
             text = hour.temp.toString()+"°",
             style = MaterialTheme.typography.body2,
