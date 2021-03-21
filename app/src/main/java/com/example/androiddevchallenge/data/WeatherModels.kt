@@ -24,13 +24,10 @@ import com.example.androiddevchallenge.ui.theme.thunderstormBackground
 import com.example.androiddevchallenge.ui.theme.thunderstormSea
 import java.util.*
 
-class WeatherModels {
-}
-
 data class Forecast (
     val name: String,
     val overview: ForecastOverview,
-    val days: List<ForecastDay>
+    val hours: List<ForecastHour>
 )
 
 data class ForecastOverview (

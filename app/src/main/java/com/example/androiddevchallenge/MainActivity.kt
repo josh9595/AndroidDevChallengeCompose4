@@ -150,7 +150,9 @@ fun MyApp(
                         coroutineScope.launch {
                             pagerState.goToPage(pagerState.currentPage - 1)
                         }
-                    }, modifier = Modifier.padding(0.dp, 14.dp, 0.dp, 0.dp).width(48.dp)) {
+                    }, modifier = Modifier
+                        .padding(0.dp, 14.dp, 0.dp, 0.dp)
+                        .width(48.dp)) {
                         Icon(
                             imageVector = Icons.Default.ChevronLeft,
                             contentDescription = "Go to ${forecasts[pagerState.currentPage - 1].name} forecast",
@@ -163,9 +165,12 @@ fun MyApp(
                 Text(
                     text = forecasts[pagerState.currentPage].name,
                     style = MaterialTheme.typography.h2,
-                    modifier = Modifier.weight(1f).semantics {
-                        contentDescription = "Forecast for ${forecasts[pagerState.currentPage].name}"
-                    },
+                    modifier = Modifier
+                        .weight(1f)
+                        .semantics {
+                            contentDescription =
+                                "Forecast for ${forecasts[pagerState.currentPage].name}"
+                        },
                     textAlign = TextAlign.Center
                 )
                 if (pagerState.currentPage != forecasts.size - 1) {
@@ -173,7 +178,9 @@ fun MyApp(
                         coroutineScope.launch {
                             pagerState.goToPage(pagerState.currentPage + 1)
                         }
-                    }, modifier = Modifier.padding(0.dp, 14.dp, 0.dp, 0.dp).width(48.dp)) {
+                    }, modifier = Modifier
+                        .padding(0.dp, 14.dp, 0.dp, 0.dp)
+                        .width(48.dp)) {
                         Icon(
                             imageVector = Icons.Default.ChevronRight,
                             contentDescription = "Go to ${forecasts[pagerState.currentPage + 1].name} forecast",
@@ -196,7 +203,9 @@ fun WeatherPageItem(
     accessibilityUtils: AccessibilityUtils,
 ) {
     val date = DateFormat.format("EEEE, d MMMM yyyy", Date()).toString()
-    Box(modifier = Modifier.fillMaxSize().padding(0.dp, 104.dp, 0.dp, 0.dp),
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .padding(0.dp, 104.dp, 0.dp, 0.dp),
         contentAlignment = Alignment.BottomCenter) {
         Image(
             painter = painterResource(id = forecasts[page].overview.weather.graphic),
@@ -257,11 +266,11 @@ fun WeatherPageItem(
             LazyRow (
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp)){
-                itemsIndexed (forecasts[page].days[0].forecastDateList) { index, hour ->
+                itemsIndexed (forecasts[page].hours) { index, hour ->
                     HourForecast(
                         hour,
                         index + 1,
-                        forecasts[page].days[0].forecastDateList.size,
+                        forecasts[page].hours.size,
                         accessibilityUtils
                     )
                 }
@@ -277,6 +286,10 @@ fun HourForecast(
     size: Int,
     accessibilityUtils: AccessibilityUtils
 ) {
+    val calendar = Calendar.getInstance()
+    calendar.add(Calendar.DAY_OF_YEAR, 1)
+    val tomorrow = calendar.time
+
     Column(modifier = Modifier
         .width(50.dp)
         .semantics(true) {
@@ -301,6 +314,14 @@ fun HourForecast(
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center
         )
+        if (hour.time == "00:00") {
+            Text(
+                text = DateFormat.format("EE", tomorrow).toString(),
+                style = MaterialTheme.typography.body2,
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center
+            )
+        }
     }
 }
 
