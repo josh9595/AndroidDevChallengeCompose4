@@ -583,7 +583,7 @@ class WeatherRepository {
             )
         ),
         Forecast(
-            "San Francisco",
+            "Los Angeles",
             ForecastOverview(
                 13,
                 16,

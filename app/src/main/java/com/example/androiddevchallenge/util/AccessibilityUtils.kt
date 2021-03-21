@@ -9,7 +9,6 @@ class AccessibilityUtils (private val context: Context) {
         forecast: Forecast,
         date: String
     ): String {
-        val locationString = context.getString(R.string.a11y_forecast_location, forecast.name)
         val temperatureString = context.getString(
             R.string.a11y_forecast_temperature,
             intToDegrees(forecast.overview.temp),
@@ -19,7 +18,7 @@ class AccessibilityUtils (private val context: Context) {
         val weatherString = context.getString(R.string.a11y_forecast_weather, forecast.overview.weather.text)
         val weatherExtraString = calculateWeatherExtraString()
 
-        return "$locationString $temperatureString $weatherString $weatherExtraString"
+        return "$temperatureString $weatherString $weatherExtraString"
     }
 
     fun intToDegrees (temp: Int): String = context.getString(R.string.a11y_forecast_degrees, temp.toString())
