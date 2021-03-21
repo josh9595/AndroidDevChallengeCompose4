@@ -10,4 +10,11 @@
       the License.
       -->
     <string name="app_name">AndroidDevChallenge</string>
+    <string name="a11y_forecast_location">Here is the forecast for %1$s.</string>
+    <string name="a11y_forecast_temperature">The current temperature is %1$s, with a high of %2$s and low of %3$s.</string>
+    <string name="a11y_forecast_weather">The weather is %1$s,</string>
+    <string name="a11y_forecast_weather_same">with this set to continue throughout the day</string>
+    <string name="a11y_forecast_weather_change">with this set to change around %1$s when it will become %1$s</string>
+    <string name="a11y_forecast_degrees">%1$s degrees centigrade</string>
+
 </resources>

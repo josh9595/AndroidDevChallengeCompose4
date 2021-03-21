@@ -25,13 +25,11 @@ import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -40,7 +38,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -57,6 +55,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale.Companion.FillWidth
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -68,11 +68,10 @@ import com.example.androiddevchallenge.data.WeatherRepository
 import com.example.androiddevchallenge.ui.theme.MyTheme
 import com.example.androiddevchallenge.ui.theme.selectedBackground
 import com.example.androiddevchallenge.ui.theme.transparentBackground
+import com.example.androiddevchallenge.util.AccessibilityUtils
 import com.example.androiddevchallenge.util.Pager
 import com.example.androiddevchallenge.util.PagerState
 import dev.chrisbanes.accompanist.insets.ProvideWindowInsets
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -81,11 +80,15 @@ class MainActivity : AppCompatActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         val forecasts = WeatherRepository().getForecasts()
+        val accessibilityUtils = AccessibilityUtils(this)
 
         setContent {
             MyTheme {
                 ProvideWindowInsets {
-                    MyApp(forecasts)
+                    MyApp(
+                        forecasts,
+                        accessibilityUtils
+                    )
                 }
             }
         }
@@ -93,7 +96,11 @@ class MainActivity : AppCompatActivity() {
 }
 
 @Composable
-fun MyApp(forecasts: List<Forecast>, weatherViewModel: WeatherViewModel = WeatherViewModel()) {
+fun MyApp(
+    forecasts: List<Forecast>,
+    accessibilityUtils: AccessibilityUtils,
+    weatherViewModel: WeatherViewModel = WeatherViewModel()
+) {
     weatherViewModel.initLists(forecasts.size)
 
     val pagerState = remember { PagerState() }
@@ -128,12 +135,8 @@ fun MyApp(forecasts: List<Forecast>, weatherViewModel: WeatherViewModel = Weathe
                     .fillMaxSize()
             ) {
                 WeatherPageItem(
-                    page,
                     forecasts[page],
-                    selectedDayState[page],
-                    selectedHoursState[page],
-                    weatherViewModel::setSelectedDay,
-                    weatherViewModel::setSelectedDayHours
+                    accessibilityUtils
                 )
             }
         }
@@ -142,13 +145,10 @@ fun MyApp(forecasts: List<Forecast>, weatherViewModel: WeatherViewModel = Weathe
 
 @Composable
 fun WeatherPageItem(
-    page: Int,
     forecast: Forecast,
-    selectedDay: String,
-    selectedHours: List<ForecastHour>,
-    setSelectedDay: (Int, String) -> Unit,
-    setSelectedDayHours: (Int, List<ForecastHour>) -> Unit
+    accessibilityUtils: AccessibilityUtils,
 ) {
+    val date = DateFormat.format("EEEE, d MMMM yyyy", Date()).toString()
     Box(modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.BottomCenter) {
         Image(
@@ -159,105 +159,85 @@ fun WeatherPageItem(
             alignment = Alignment.BottomCenter
         )
         Column(modifier = Modifier.fillMaxSize()) {
-            Row(modifier = Modifier.padding(16.dp, 32.dp, 16.dp, 0.dp)) {
-                Text(text = forecast.name, style = MaterialTheme.typography.h2)
-            }
-
-            Row(modifier = Modifier
-                .padding(16.dp, 0.dp, 16.dp, 0.dp)
-                .fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                Text(text = forecast.overview.temp.toString()+"°", style = MaterialTheme.typography.h1)
-                Column(Modifier.padding(0.dp, 16.dp, 0.dp, 0.dp)) {
-                    Row {
-                        Icon(
-                            Icons.Default.ArrowUpward,
-                            contentDescription = null,
-                            modifier = Modifier
-                                .padding(0.dp, 16.dp, 0.dp, 0.dp)
-                                .width(28.dp),
-                            tint = Color.White
-                        )
-                        Text(text = forecast.overview.tempHigh.toString()+"°", style = MaterialTheme.typography.h3)
-                    }
-                    Row {
-                        Icon(
-                            Icons.Default.ArrowDownward,
-                            contentDescription = null,
-                            modifier = Modifier
-                                .padding(0.dp, 16.dp, 0.dp, 0.dp)
-                                .width(28.dp),
-                            tint = Color.White
-                        )
-                        Text(text = forecast.overview.tempLow.toString()+"°", style = MaterialTheme.typography.h3)
-                    }
-
+            Column(Modifier.semantics(true) {
+                contentDescription = accessibilityUtils.buildForecastOverview(
+                    forecast,
+                    date,
+                )
+            }) {
+                Row(modifier = Modifier.padding(16.dp, 32.dp, 16.dp, 0.dp)) {
+                    Text(text = forecast.name, style = MaterialTheme.typography.h2)
                 }
-                Image(painter = painterResource(id = forecast.overview.weather.icon), contentDescription = null, modifier = Modifier.size(120.dp))
-            }
 
-//            LazyRow(
-//                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp)) {
-//                items(forecast.days) { day ->
-//                    DayButton(
-//                        page,
-//                        day,
-//                        (selectedDay == day.dateReadable),
-//                        setSelectedDay,
-//                        setSelectedDayHours)
-//                }
-//            }
+                Row(modifier = Modifier
+                    .padding(16.dp, 0.dp, 16.dp, 0.dp)
+                    .fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                    Text(text = forecast.overview.temp.toString()+"°", style = MaterialTheme.typography.h1)
+                    Column(Modifier.padding(0.dp, 16.dp, 0.dp, 0.dp)) {
+                        Row {
+                            Icon(
+                                Icons.Default.ArrowUpward,
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .padding(0.dp, 16.dp, 0.dp, 0.dp)
+                                    .width(28.dp),
+                                tint = Color.White
+                            )
+                            Text(text = forecast.overview.tempHigh.toString()+"°", style = MaterialTheme.typography.h3)
+                        }
+                        Row {
+                            Icon(
+                                Icons.Default.ArrowDownward,
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .padding(0.dp, 16.dp, 0.dp, 0.dp)
+                                    .width(28.dp),
+                                tint = Color.White
+                            )
+                            Text(text = forecast.overview.tempLow.toString()+"°", style = MaterialTheme.typography.h3)
+                        }
+
+                    }
+                    Image(painter = painterResource(id = forecast.overview.weather.icon), contentDescription = null, modifier = Modifier.size(120.dp))
+                }
+            }
 
             Text(
-                text = DateFormat.format("EEEE, d MMMM yyyy", Date()).toString(),
-                modifier = Modifier.padding(16.dp, 0.dp, 0.dp, 0.dp)
+                text = date,
+                modifier = Modifier.padding(16.dp, 0.dp, 0.dp, 8.dp).semantics {
+                    contentDescription = "Hourly forecast for $date"
+                }
             )
 
             LazyRow (
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp)){
-//                if (selectedDay != "") {
-                    items (forecast.days[0].forecastDateList) { hour ->
-                        HourForecast(
-                            hour,
-                            forecast.days[0].forecastDateList.size
-                        )
-                    }
-//                }
+                itemsIndexed (forecast.days[0].forecastDateList) { index, hour ->
+                    HourForecast(
+                        hour,
+                        index + 1,
+                        forecast.days[0].forecastDateList.size,
+                        accessibilityUtils
+                    )
+                }
             }
         }
     }
 }
 
 @Composable
-fun DayButton(
-    page: Int,
-    day: ForecastDay,
-    selected: Boolean,
-    setSelectedDay: (Int, String) -> Unit,
-    setSelectedDayHours: (Int, List<ForecastHour>) -> Unit) {
-
-    Row(
-        modifier = Modifier
-            .background(if (selected) selectedBackground else transparentBackground)
-            .clickable {
-                setSelectedDayHours(page, day.forecastDateList)
-                setSelectedDay(page, day.dateReadable)
-            }
-    ) {
-        Text(
-            text = day.dateReadable,
-            style = MaterialTheme.typography.body1,
-            modifier = Modifier.padding(8.dp)
-        )
-    }
-}
-
-@Composable
 fun HourForecast(
     hour: ForecastHour,
-    size: Int) {
-
-    Column(modifier = Modifier.width(50.dp)) {
+    position: Int,
+    size: Int,
+    accessibilityUtils: AccessibilityUtils
+) {
+    Column(modifier = Modifier
+        .width(50.dp)
+        .semantics(true) {
+            contentDescription = "${hour.time}, ${hour.weather.text}, ${accessibilityUtils.intToDegrees(hour.temp)}, $position of $size"
+        }
+    ) {
         Text(
             text = hour.temp.toString()+"°",
             style = MaterialTheme.typography.body2,
@@ -282,6 +262,6 @@ fun HourForecast(
 @Composable
 fun LightPreview() {
     MyTheme {
-        MyApp(WeatherRepository().getForecasts())
+//        MyApp(WeatherRepository().getForecasts(), {})
     }
 }

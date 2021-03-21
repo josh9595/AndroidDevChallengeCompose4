@@ -52,15 +52,15 @@ data class ForecastHour (
     val weather: Weather
 )
 
-enum class Weather(val colour: Color, val seaColour: Color, val graphic: Int, val icon: Int, val iconSmall: Int) {
-    CLEAR (clearBackground, clearSea, R.drawable.clear_graphic, R.drawable.clear, R.drawable.clear_small),
-    LIGHT_CLOUD (lightCloudBackground, lightCloudSea, R.drawable.light_cloud_graphic, R.drawable.light_cloud, R.drawable.light_cloud_small),
-    HEAVY_CLOUD (heavyCloudBackground, heavyCloudSea, R.drawable.heavy_cloud_graphic, R.drawable.heavy_cloud, R.drawable.heavy_cloud_small),
-    SHOWERS (showersBackground, showersSea, R.drawable.showers_graphic, R.drawable.showers, R.drawable.showers_small),
-    LIGHT_RAIN (lightRainBackground, lightRainSea, R.drawable.light_rain_graphic, R.drawable.light_rain, R.drawable.light_rain_small),
-    HEAVY_RAIN (heavyRainBackground, heavyRainSea, R.drawable.heavy_rain_graphic, R.drawable.heavy_rain, R.drawable.heavy_rain_small),
-    THUNDERSTORM (thunderstormBackground, thunderstormSea, R.drawable.thunderstorm_graphic, R.drawable.thunderstorm, R.drawable.thunderstorm_small),
-    HAIL (hailBackground, hailSea, R.drawable.hail_graphic, R.drawable.hail, R.drawable.hail_small),
-    SLEET (sleetBackground, sleetSea, R.drawable.sleet_graphic, R.drawable.sleet, R.drawable.sleet_small),
-    SNOW (snowBackground, snowSea, R.drawable.snow_graphic, R.drawable.snow, R.drawable.snow_small)
+enum class Weather(val text: String, val colour: Color, val seaColour: Color, val graphic: Int, val icon: Int, val iconSmall: Int) {
+    CLEAR ("Clear", clearBackground, clearSea, R.drawable.clear_graphic, R.drawable.clear, R.drawable.clear_small),
+    LIGHT_CLOUD ("Light Cloud", lightCloudBackground, lightCloudSea, R.drawable.light_cloud_graphic, R.drawable.light_cloud, R.drawable.light_cloud_small),
+    HEAVY_CLOUD ("Heavy Cloud", heavyCloudBackground, heavyCloudSea, R.drawable.heavy_cloud_graphic, R.drawable.heavy_cloud, R.drawable.heavy_cloud_small),
+    SHOWERS ("Showers", showersBackground, showersSea, R.drawable.showers_graphic, R.drawable.showers, R.drawable.showers_small),
+    LIGHT_RAIN ("Light Rain", lightRainBackground, lightRainSea, R.drawable.light_rain_graphic, R.drawable.light_rain, R.drawable.light_rain_small),
+    HEAVY_RAIN ("Heavy Rain", heavyRainBackground, heavyRainSea, R.drawable.heavy_rain_graphic, R.drawable.heavy_rain, R.drawable.heavy_rain_small),
+    THUNDERSTORM ("Thunderstorms", thunderstormBackground, thunderstormSea, R.drawable.thunderstorm_graphic, R.drawable.thunderstorm, R.drawable.thunderstorm_small),
+    HAIL ("Hail", hailBackground, hailSea, R.drawable.hail_graphic, R.drawable.hail, R.drawable.hail_small),
+    SLEET ("Sleet", sleetBackground, sleetSea, R.drawable.sleet_graphic, R.drawable.sleet, R.drawable.sleet_small),
+    SNOW ("Snow", snowBackground, snowSea, R.drawable.snow_graphic, R.drawable.snow, R.drawable.snow_small)
 }
