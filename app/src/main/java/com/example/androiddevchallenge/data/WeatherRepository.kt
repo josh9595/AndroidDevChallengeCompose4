@@ -18,6 +18,137 @@ package com.example.androiddevchallenge.data
 class WeatherRepository {
     fun getForecasts(): List<Forecast> = listOf(
         Forecast(
+            "Los Angeles",
+            ForecastOverview(
+                15,
+                20,
+                10,
+                Weather.CLEAR
+            ),
+            listOf(
+                ForecastHour(
+                    "06:00",
+                    11,
+                    Weather.CLEAR
+                ),
+                ForecastHour(
+                    "07:00",
+                    11,
+                    Weather.CLEAR
+                ),
+                ForecastHour(
+                    "08:00",
+                    12,
+                    Weather.CLEAR
+                ),
+                ForecastHour(
+                    "09:00",
+                    13,
+                    Weather.CLEAR
+                ),
+                ForecastHour(
+                    "10:00",
+                    15,
+                    Weather.CLEAR
+                ),
+                ForecastHour(
+                    "11:00",
+                    17,
+                    Weather.CLEAR
+                ),
+                ForecastHour(
+                    "12:00",
+                    18,
+                    Weather.CLEAR
+                ),
+                ForecastHour(
+                    "13:00",
+                    19,
+                    Weather.CLEAR
+                ),
+                ForecastHour(
+                    "14:00",
+                    19,
+                    Weather.CLEAR
+                ),
+                ForecastHour(
+                    "15:00",
+                    19,
+                    Weather.CLEAR
+                ),
+                ForecastHour(
+                    "16:00",
+                    19,
+                    Weather.CLEAR
+                ),
+                ForecastHour(
+                    "17:00",
+                    18,
+                    Weather.CLEAR
+                ),
+                ForecastHour(
+                    "18:00",
+                    17,
+                    Weather.CLEAR
+                ),
+                ForecastHour(
+                    "19:00",
+                    16,
+                    Weather.CLEAR
+                ),
+                ForecastHour(
+                    "20:00",
+                    15,
+                    Weather.CLEAR
+                ),
+                ForecastHour(
+                    "21:00",
+                    14,
+                    Weather.LIGHT_CLOUD
+                ),
+                ForecastHour(
+                    "22:00",
+                    14,
+                    Weather.LIGHT_CLOUD
+                ),
+                ForecastHour(
+                    "23:00",
+                    13,
+                    Weather.LIGHT_CLOUD
+                ),
+                ForecastHour(
+                    "00:00",
+                    13,
+                    Weather.LIGHT_CLOUD
+                ),
+                ForecastHour(
+                    "01:00",
+                    13,
+                    Weather.LIGHT_CLOUD
+                ),
+                ForecastHour(
+                    "02:00",
+                    13,
+                    Weather.LIGHT_CLOUD
+                ),
+                ForecastHour(
+                    "03:00",
+                    13,
+                    Weather.LIGHT_CLOUD
+                ),
+                ForecastHour(
+                    "04:00",
+                    12,
+                    Weather.LIGHT_CLOUD
+                ),
+                ForecastHour(
+                    "05:00",
+                    12,
+                    Weather.LIGHT_CLOUD
+                ),
+            )
+        ),
+        Forecast(
             "Manchester",
             ForecastOverview(
                 10,
@@ -149,133 +280,264 @@ class WeatherRepository {
             )
         ),
         Forecast(
-            "Los Angeles",
+            "Sydney",
             ForecastOverview(
+                21,
+                28,
                 15,
-                20,
-                10,
-                Weather.CLEAR
+                Weather.LIGHT_CLOUD
             ),
             listOf(
                 ForecastHour(
                     "06:00",
-                    11,
+                    19,
                     Weather.CLEAR
                 ),
                 ForecastHour(
                     "07:00",
-                    11,
+                    20,
                     Weather.CLEAR
                 ),
                 ForecastHour(
                     "08:00",
-                    12,
+                    20,
                     Weather.CLEAR
                 ),
                 ForecastHour(
                     "09:00",
-                    13,
+                    21,
                     Weather.CLEAR
                 ),
                 ForecastHour(
                     "10:00",
-                    15,
-                    Weather.CLEAR
+                    23,
+                    Weather.LIGHT_CLOUD
                 ),
                 ForecastHour(
                     "11:00",
-                    17,
-                    Weather.CLEAR
+                    24,
+                    Weather.LIGHT_CLOUD
                 ),
                 ForecastHour(
                     "12:00",
-                    18,
-                    Weather.CLEAR
+                    25,
+                    Weather.LIGHT_CLOUD
                 ),
                 ForecastHour(
                     "13:00",
-                    19,
-                    Weather.CLEAR
+                    26,
+                    Weather.LIGHT_CLOUD
                 ),
                 ForecastHour(
                     "14:00",
-                    19,
-                    Weather.CLEAR
+                    27,
+                    Weather.LIGHT_CLOUD
                 ),
                 ForecastHour(
                     "15:00",
-                    19,
+                    27,
                     Weather.CLEAR
                 ),
                 ForecastHour(
                     "16:00",
+                    27,
+                    Weather.LIGHT_CLOUD
+                ),
+                ForecastHour(
+                    "17:00",
+                    26,
+                    Weather.LIGHT_CLOUD
+                ),
+                ForecastHour(
+                    "18:00",
+                    25,
+                    Weather.LIGHT_CLOUD
+                ),
+                ForecastHour(
+                    "19:00",
+                    24,
+                    Weather.LIGHT_CLOUD
+                ),
+                ForecastHour(
+                    "20:00",
+                    23,
+                    Weather.LIGHT_CLOUD
+                ),
+                ForecastHour(
+                    "21:00",
+                    22,
+                    Weather.CLEAR
+                ),
+                ForecastHour(
+                    "22:00",
+                    21,
+                    Weather.CLEAR
+                ),
+                ForecastHour(
+                    "23:00",
+                    20,
+                    Weather.CLEAR
+                ),
+                ForecastHour(
+                    "00:00",
+                    20,
+                    Weather.CLEAR
+                ),
+                ForecastHour(
+                    "01:00",
                     19,
                     Weather.CLEAR
                 ),
                 ForecastHour(
-                    "17:00",
+                    "02:00",
+                    19,
+                    Weather.CLEAR
+                ),
+                ForecastHour(
+                    "03:00",
                     18,
                     Weather.CLEAR
                 ),
                 ForecastHour(
-                    "18:00",
-                    17,
-                    Weather.CLEAR
-                ),
-                ForecastHour(
-                    "19:00",
-                    16,
-                    Weather.CLEAR
-                ),
-                ForecastHour(
-                    "20:00",
-                    15,
-                    Weather.CLEAR
-                ),
-                ForecastHour(
-                    "21:00",
-                    14,
-                    Weather.LIGHT_CLOUD
-                ),
-                ForecastHour(
-                    "22:00",
-                    14,
-                    Weather.LIGHT_CLOUD
-                ),
-                ForecastHour(
-                    "23:00",
-                    13,
-                    Weather.LIGHT_CLOUD
-                ),
-                ForecastHour(
-                    "00:00",
-                    13,
-                    Weather.LIGHT_CLOUD
-                ),
-                ForecastHour(
-                    "01:00",
-                    13,
-                    Weather.LIGHT_CLOUD
-                ),
-                ForecastHour(
-                    "02:00",
-                    13,
-                    Weather.LIGHT_CLOUD
-                ),
-                ForecastHour(
-                    "03:00",
-                    13,
-                    Weather.LIGHT_CLOUD
-                ),
-                ForecastHour(
                     "04:00",
-                    12,
-                    Weather.LIGHT_CLOUD
+                    18,
+                    Weather.CLEAR
                 ),
                 ForecastHour(
                     "05:00",
-                    12,
+                    17,
                     Weather.LIGHT_CLOUD
+                ),
+            )
+        ),
+        Forecast(
+            "Toronto",
+            ForecastOverview(
+                -1,
+                2,
+                -5,
+                Weather.SNOW
+            ),
+            listOf(
+                ForecastHour(
+                    "06:00",
+                    -4,
+                    Weather.HEAVY_CLOUD
+                ),
+                ForecastHour(
+                    "07:00",
+                    -4,
+                    Weather.HEAVY_CLOUD
+                ),
+                ForecastHour(
+                    "08:00",
+                    -3,
+                    Weather.SLEET
+                ),
+                ForecastHour(
+                    "09:00",
+                    -3,
+                    Weather.SLEET
+                ),
+                ForecastHour(
+                    "10:00",
+                    -2,
+                    Weather.SNOW
+                ),
+                ForecastHour(
+                    "11:00",
+                    -1,
+                    Weather.SNOW
+                ),
+                ForecastHour(
+                    "12:00",
+                    -1,
+                    Weather.SNOW
+                ),
+                ForecastHour(
+                    "13:00",
+                    0,
+                    Weather.SNOW
+                ),
+                ForecastHour(
+                    "14:00",
+                    0,
+                    Weather.SLEET
+                ),
+                ForecastHour(
+                    "15:00",
+                    1,
+                    Weather.HEAVY_CLOUD
+                ),
+                ForecastHour(
+                    "16:00",
+                    0,
+                    Weather.HEAVY_CLOUD
+                ),
+                ForecastHour(
+                    "17:00",
+                    -2,
+                    Weather.SNOW
+                ),
+                ForecastHour(
+                    "18:00",
+                    -2,
+                    Weather.SNOW
+                ),
+                ForecastHour(
+                    "19:00",
+                    -3,
+                    Weather.SNOW
+                ),
+                ForecastHour(
+                    "20:00",
+                    -4,
+                    Weather.SNOW
+                ),
+                ForecastHour(
+                    "21:00",
+                    -4,
+                    Weather.SNOW
+                ),
+                ForecastHour(
+                    "22:00",
+                    -4,
+                    Weather.SNOW
+                ),
+                ForecastHour(
+                    "23:00",
+                    -4,
+                    Weather.SLEET
+                ),
+                ForecastHour(
+                    "00:00",
+                    -4,
+                    Weather.SLEET
+                ),
+                ForecastHour(
+                    "01:00",
+                    -4,
+                    Weather.HEAVY_CLOUD
+                ),
+                ForecastHour(
+                    "02:00",
+                    -4,
+                    Weather.HEAVY_CLOUD
+                ),
+                ForecastHour(
+                    "03:00",
+                    -5,
+                    Weather.HEAVY_CLOUD
+                ),
+                ForecastHour(
+                    "04:00",
+                    -5,
+                    Weather.SLEET
+                ),
+                ForecastHour(
+                    "05:00",
+                    -5,
+                    Weather.SNOW
                 ),
             )
         ),
@@ -673,264 +935,133 @@ class WeatherRepository {
             )
         ),
         Forecast(
-            "Toronto",
+            "Singapore",
             ForecastOverview(
-                -1,
-                2,
-                -5,
-                Weather.SNOW
+                29,
+                33,
+                25,
+                Weather.SHOWERS
             ),
             listOf(
                 ForecastHour(
                     "06:00",
-                    -4,
-                    Weather.HEAVY_CLOUD
-                ),
-                ForecastHour(
-                    "07:00",
-                    -4,
-                    Weather.HEAVY_CLOUD
-                ),
-                ForecastHour(
-                    "08:00",
-                    -3,
-                    Weather.SLEET
-                ),
-                ForecastHour(
-                    "09:00",
-                    -3,
-                    Weather.SLEET
-                ),
-                ForecastHour(
-                    "10:00",
-                    -2,
-                    Weather.SNOW
-                ),
-                ForecastHour(
-                    "11:00",
-                    -1,
-                    Weather.SNOW
-                ),
-                ForecastHour(
-                    "12:00",
-                    -1,
-                    Weather.SNOW
-                ),
-                ForecastHour(
-                    "13:00",
-                    0,
-                    Weather.SNOW
-                ),
-                ForecastHour(
-                    "14:00",
-                    0,
-                    Weather.SLEET
-                ),
-                ForecastHour(
-                    "15:00",
-                    1,
-                    Weather.HEAVY_CLOUD
-                ),
-                ForecastHour(
-                    "16:00",
-                    0,
-                    Weather.HEAVY_CLOUD
-                ),
-                ForecastHour(
-                    "17:00",
-                    -2,
-                    Weather.SNOW
-                ),
-                ForecastHour(
-                    "18:00",
-                    -2,
-                    Weather.SNOW
-                ),
-                ForecastHour(
-                    "19:00",
-                    -3,
-                    Weather.SNOW
-                ),
-                ForecastHour(
-                    "20:00",
-                    -4,
-                    Weather.SNOW
-                ),
-                ForecastHour(
-                    "21:00",
-                    -4,
-                    Weather.SNOW
-                ),
-                ForecastHour(
-                    "22:00",
-                    -4,
-                    Weather.SNOW
-                ),
-                ForecastHour(
-                    "23:00",
-                    -4,
-                    Weather.SLEET
-                ),
-                ForecastHour(
-                    "00:00",
-                    -4,
-                    Weather.SLEET
-                ),
-                ForecastHour(
-                    "01:00",
-                    -4,
-                    Weather.HEAVY_CLOUD
-                ),
-                ForecastHour(
-                    "02:00",
-                    -4,
-                    Weather.HEAVY_CLOUD
-                ),
-                ForecastHour(
-                    "03:00",
-                    -5,
-                    Weather.HEAVY_CLOUD
-                ),
-                ForecastHour(
-                    "04:00",
-                    -5,
-                    Weather.SLEET
-                ),
-                ForecastHour(
-                    "05:00",
-                    -5,
-                    Weather.SNOW
-                ),
-            )
-        ),
-        Forecast(
-            "Sydney",
-            ForecastOverview(
-                21,
-                28,
-                15,
-                Weather.LIGHT_CLOUD
-            ),
-            listOf(
-                ForecastHour(
-                    "06:00",
-                    19,
-                    Weather.CLEAR
-                ),
-                ForecastHour(
-                    "07:00",
-                    20,
-                    Weather.CLEAR
-                ),
-                ForecastHour(
-                    "08:00",
-                    20,
-                    Weather.CLEAR
-                ),
-                ForecastHour(
-                    "09:00",
-                    21,
-                    Weather.CLEAR
-                ),
-                ForecastHour(
-                    "10:00",
-                    23,
+                    27,
                     Weather.LIGHT_CLOUD
                 ),
                 ForecastHour(
-                    "11:00",
-                    24,
+                    "07:00",
+                    27,
                     Weather.LIGHT_CLOUD
                 ),
                 ForecastHour(
+                    "08:00",
+                    29,
+                    Weather.LIGHT_CLOUD
+                ),
+                ForecastHour(
+                    "09:00",
+                    29,
+                    Weather.LIGHT_CLOUD
+                ),
+                ForecastHour(
+                    "10:00",
+                    30,
+                    Weather.CLEAR
+                ),
+                ForecastHour(
+                    "11:00",
+                    31,
+                    Weather.CLEAR
+                ),
+                ForecastHour(
                     "12:00",
-                    25,
+                    32,
                     Weather.LIGHT_CLOUD
                 ),
                 ForecastHour(
                     "13:00",
-                    26,
-                    Weather.LIGHT_CLOUD
+                    32,
+                    Weather.SHOWERS
                 ),
                 ForecastHour(
                     "14:00",
-                    27,
-                    Weather.LIGHT_CLOUD
+                    33,
+                    Weather.SHOWERS
                 ),
                 ForecastHour(
                     "15:00",
-                    27,
-                    Weather.CLEAR
+                    32,
+                    Weather.SHOWERS
                 ),
                 ForecastHour(
                     "16:00",
-                    27,
-                    Weather.LIGHT_CLOUD
+                    32,
+                    Weather.SHOWERS
                 ),
                 ForecastHour(
                     "17:00",
-                    26,
+                    32,
                     Weather.LIGHT_CLOUD
                 ),
                 ForecastHour(
                     "18:00",
-                    25,
-                    Weather.LIGHT_CLOUD
+                    31,
+                    Weather.SHOWERS
                 ),
                 ForecastHour(
                     "19:00",
-                    24,
+                    30,
                     Weather.LIGHT_CLOUD
                 ),
                 ForecastHour(
                     "20:00",
-                    23,
+                    30,
                     Weather.LIGHT_CLOUD
                 ),
                 ForecastHour(
                     "21:00",
-                    22,
-                    Weather.CLEAR
+                    29,
+                    Weather.LIGHT_CLOUD
                 ),
                 ForecastHour(
                     "22:00",
-                    21,
-                    Weather.CLEAR
+                    29,
+                    Weather.LIGHT_CLOUD
                 ),
                 ForecastHour(
                     "23:00",
-                    20,
+                    29,
                     Weather.CLEAR
                 ),
                 ForecastHour(
                     "00:00",
-                    20,
+                    29,
                     Weather.CLEAR
                 ),
                 ForecastHour(
                     "01:00",
-                    19,
+                    29,
                     Weather.CLEAR
                 ),
                 ForecastHour(
                     "02:00",
-                    19,
+                    28,
                     Weather.CLEAR
                 ),
                 ForecastHour(
                     "03:00",
-                    18,
+                    28,
                     Weather.CLEAR
                 ),
                 ForecastHour(
                     "04:00",
-                    18,
-                    Weather.CLEAR
+                    28,
+                    Weather.SHOWERS
                 ),
                 ForecastHour(
                     "05:00",
-                    17,
-                    Weather.LIGHT_CLOUD
+                    27,
+                    Weather.SHOWERS
                 ),
             )
         ),
@@ -1062,137 +1193,6 @@ class WeatherRepository {
                     "05:00",
                     -2,
                     Weather.HEAVY_CLOUD
-                ),
-            )
-        ),
-        Forecast(
-            "Singapore",
-            ForecastOverview(
-                29,
-                33,
-                25,
-                Weather.SHOWERS
-            ),
-            listOf(
-                ForecastHour(
-                    "06:00",
-                    27,
-                    Weather.LIGHT_CLOUD
-                ),
-                ForecastHour(
-                    "07:00",
-                    27,
-                    Weather.LIGHT_CLOUD
-                ),
-                ForecastHour(
-                    "08:00",
-                    29,
-                    Weather.LIGHT_CLOUD
-                ),
-                ForecastHour(
-                    "09:00",
-                    29,
-                    Weather.LIGHT_CLOUD
-                ),
-                ForecastHour(
-                    "10:00",
-                    30,
-                    Weather.CLEAR
-                ),
-                ForecastHour(
-                    "11:00",
-                    31,
-                    Weather.CLEAR
-                ),
-                ForecastHour(
-                    "12:00",
-                    32,
-                    Weather.LIGHT_CLOUD
-                ),
-                ForecastHour(
-                    "13:00",
-                    32,
-                    Weather.SHOWERS
-                ),
-                ForecastHour(
-                    "14:00",
-                    33,
-                    Weather.SHOWERS
-                ),
-                ForecastHour(
-                    "15:00",
-                    32,
-                    Weather.SHOWERS
-                ),
-                ForecastHour(
-                    "16:00",
-                    32,
-                    Weather.SHOWERS
-                ),
-                ForecastHour(
-                    "17:00",
-                    32,
-                    Weather.LIGHT_CLOUD
-                ),
-                ForecastHour(
-                    "18:00",
-                    31,
-                    Weather.SHOWERS
-                ),
-                ForecastHour(
-                    "19:00",
-                    30,
-                    Weather.LIGHT_CLOUD
-                ),
-                ForecastHour(
-                    "20:00",
-                    30,
-                    Weather.LIGHT_CLOUD
-                ),
-                ForecastHour(
-                    "21:00",
-                    29,
-                    Weather.LIGHT_CLOUD
-                ),
-                ForecastHour(
-                    "22:00",
-                    29,
-                    Weather.LIGHT_CLOUD
-                ),
-                ForecastHour(
-                    "23:00",
-                    29,
-                    Weather.CLEAR
-                ),
-                ForecastHour(
-                    "00:00",
-                    29,
-                    Weather.CLEAR
-                ),
-                ForecastHour(
-                    "01:00",
-                    29,
-                    Weather.CLEAR
-                ),
-                ForecastHour(
-                    "02:00",
-                    28,
-                    Weather.CLEAR
-                ),
-                ForecastHour(
-                    "03:00",
-                    28,
-                    Weather.CLEAR
-                ),
-                ForecastHour(
-                    "04:00",
-                    28,
-                    Weather.SHOWERS
-                ),
-                ForecastHour(
-                    "05:00",
-                    27,
-                    Weather.SHOWERS
                 ),
             )
         ),

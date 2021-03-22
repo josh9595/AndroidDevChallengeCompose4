@@ -19,9 +19,17 @@ import android.os.Bundle
 import android.text.format.DateFormat
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.animation.animateColor
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.animateValue
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -62,10 +70,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
+import androidx.compose.runtime.getValue
 import com.example.androiddevchallenge.data.Forecast
 import com.example.androiddevchallenge.data.ForecastHour
 import com.example.androiddevchallenge.data.WeatherRepository
 import com.example.androiddevchallenge.ui.theme.MyTheme
+import com.example.androiddevchallenge.ui.theme.seaColor
 import com.example.androiddevchallenge.util.AccessibilityUtils
 import com.example.androiddevchallenge.util.Pager
 import com.example.androiddevchallenge.util.PagerState
@@ -107,7 +117,16 @@ fun MyApp(
     val coroutineScope = rememberCoroutineScope()
 
     val selectedBackground = forecasts[pagerState.currentPage].overview.weather.colour
-    val selectedSea = forecasts[pagerState.currentPage].overview.weather.seaColour
+
+    val infiniteTransition = rememberInfiniteTransition()
+    val paddingAnim by infiniteTransition.animateFloat(
+        initialValue = 0f,
+        targetValue = 32f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(5000, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse
+        )
+    )
 
     pagerState.maxPage = (forecasts.size - 1).coerceAtLeast(0)
 
@@ -127,10 +146,7 @@ fun MyApp(
                         .fillMaxWidth()
                         .height(160.dp)
                         .background(
-                            animateColorAsState(
-                                selectedSea,
-                                spring(stiffness = Spring.StiffnessLow)
-                            ).value
+                            seaColor
                         )
                 ) {
                 }
@@ -143,6 +159,7 @@ fun MyApp(
                         pagerState,
                         page,
                         forecasts,
+                        paddingAnim,
                         accessibilityUtils
                     )
                 }
@@ -210,21 +227,29 @@ fun WeatherPageItem(
     pagerState: PagerState,
     page: Int,
     forecasts: List<Forecast>,
+    paddingAnim: Float,
     accessibilityUtils: AccessibilityUtils,
 ) {
+
     val date = DateFormat.format("EEEE, d MMMM yyyy", Date()).toString()
     Box(
         modifier = Modifier
             .fillMaxSize()
             .padding(0.dp, 104.dp, 0.dp, 0.dp),
-        contentAlignment = Alignment.BottomCenter
+        contentAlignment = Alignment.BottomStart
     ) {
         Image(
             painter = painterResource(id = forecasts[page].overview.weather.graphic),
             contentDescription = null,
             contentScale = FillWidth,
             modifier = Modifier.fillMaxWidth(),
-            alignment = Alignment.BottomCenter
+            alignment = Alignment.BottomStart
+        )
+        Image(
+            painter = painterResource(R.drawable.fishing_line),
+            contentDescription = null,
+            modifier = Modifier.padding((paddingAnim + 16).dp, 0.dp, 0.dp, 120.dp),
+            alignment = Alignment.BottomStart
         )
         Column(modifier = Modifier.fillMaxSize()) {
             Column(
