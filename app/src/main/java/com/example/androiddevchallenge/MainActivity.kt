@@ -49,8 +49,6 @@ import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.material.icons.filled.ChevronLeft
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -73,7 +71,8 @@ import com.example.androiddevchallenge.util.Pager
 import com.example.androiddevchallenge.util.PagerState
 import dev.chrisbanes.accompanist.insets.ProvideWindowInsets
 import kotlinx.coroutines.launch
-import java.util.*
+import java.util.Calendar
+import java.util.Date
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -112,23 +111,28 @@ fun MyApp(
 
     pagerState.maxPage = (forecasts.size - 1).coerceAtLeast(0)
 
-    Surface(color = animateColorAsState(
-        selectedBackground,
-        spring(stiffness = Spring.StiffnessVeryLow)
-    ).value) {
-        Box (modifier = Modifier.fillMaxSize()) {
-            Box(modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.BottomCenter) {
-                Row(modifier = Modifier
-                    .fillMaxWidth()
-                    .height(160.dp)
-                    .background(
-                        animateColorAsState(
-                            selectedSea,
-                            spring(stiffness = Spring.StiffnessLow)
-                        ).value
-                    )) {
-
+    Surface(
+        color = animateColorAsState(
+            selectedBackground,
+            spring(stiffness = Spring.StiffnessVeryLow)
+        ).value
+    ) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.BottomCenter
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(160.dp)
+                        .background(
+                            animateColorAsState(
+                                selectedSea,
+                                spring(stiffness = Spring.StiffnessLow)
+                            ).value
+                        )
+                ) {
                 }
                 Pager(
                     state = pagerState,
@@ -146,13 +150,16 @@ fun MyApp(
 
             Row(modifier = Modifier.padding(0.dp, 32.dp, 0.dp, 0.dp)) {
                 if (pagerState.currentPage != 0) {
-                    IconButton(onClick = {
-                        coroutineScope.launch {
-                            pagerState.goToPage(pagerState.currentPage - 1)
-                        }
-                    }, modifier = Modifier
-                        .padding(0.dp, 14.dp, 0.dp, 0.dp)
-                        .width(48.dp)) {
+                    IconButton(
+                        onClick = {
+                            coroutineScope.launch {
+                                pagerState.goToPage(pagerState.currentPage - 1)
+                            }
+                        },
+                        modifier = Modifier
+                            .padding(0.dp, 14.dp, 0.dp, 0.dp)
+                            .width(48.dp)
+                    ) {
                         Icon(
                             imageVector = Icons.Default.ChevronLeft,
                             contentDescription = "Go to ${forecasts[pagerState.currentPage - 1].name} forecast",
@@ -174,13 +181,16 @@ fun MyApp(
                     textAlign = TextAlign.Center
                 )
                 if (pagerState.currentPage != forecasts.size - 1) {
-                    IconButton(onClick = {
-                        coroutineScope.launch {
-                            pagerState.goToPage(pagerState.currentPage + 1)
-                        }
-                    }, modifier = Modifier
-                        .padding(0.dp, 14.dp, 0.dp, 0.dp)
-                        .width(48.dp)) {
+                    IconButton(
+                        onClick = {
+                            coroutineScope.launch {
+                                pagerState.goToPage(pagerState.currentPage + 1)
+                            }
+                        },
+                        modifier = Modifier
+                            .padding(0.dp, 14.dp, 0.dp, 0.dp)
+                            .width(48.dp)
+                    ) {
                         Icon(
                             imageVector = Icons.Default.ChevronRight,
                             contentDescription = "Go to ${forecasts[pagerState.currentPage + 1].name} forecast",
@@ -203,10 +213,12 @@ fun WeatherPageItem(
     accessibilityUtils: AccessibilityUtils,
 ) {
     val date = DateFormat.format("EEEE, d MMMM yyyy", Date()).toString()
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .padding(0.dp, 104.dp, 0.dp, 0.dp),
-        contentAlignment = Alignment.BottomCenter) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(0.dp, 104.dp, 0.dp, 0.dp),
+        contentAlignment = Alignment.BottomCenter
+    ) {
         Image(
             painter = painterResource(id = forecasts[page].overview.weather.graphic),
             contentDescription = null,
@@ -215,16 +227,21 @@ fun WeatherPageItem(
             alignment = Alignment.BottomCenter
         )
         Column(modifier = Modifier.fillMaxSize()) {
-            Column(Modifier.semantics(true) {
-                contentDescription = accessibilityUtils.buildForecastOverview(
-                    forecasts[page],
-                    date,
-                )
-            }) {
-                Row(modifier = Modifier
-                    .padding(16.dp, 0.dp, 16.dp, 0.dp)
-                    .fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                    Text(text = forecasts[page].overview.temp.toString()+"°", style = MaterialTheme.typography.h1)
+            Column(
+                Modifier.semantics(true) {
+                    contentDescription = accessibilityUtils.buildForecastOverview(
+                        forecasts[page],
+                        date,
+                    )
+                }
+            ) {
+                Row(
+                    modifier = Modifier
+                        .padding(16.dp, 0.dp, 16.dp, 0.dp)
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(text = forecasts[page].overview.temp.toString() + "°", style = MaterialTheme.typography.h1)
                     Column(Modifier.padding(0.dp, 16.dp, 0.dp, 0.dp)) {
                         Row {
                             Icon(
@@ -235,7 +252,7 @@ fun WeatherPageItem(
                                     .width(28.dp),
                                 tint = Color.White
                             )
-                            Text(text = forecasts[page].overview.tempHigh.toString()+"°", style = MaterialTheme.typography.h3)
+                            Text(text = forecasts[page].overview.tempHigh.toString() + "°", style = MaterialTheme.typography.h3)
                         }
                         Row {
                             Icon(
@@ -246,9 +263,8 @@ fun WeatherPageItem(
                                     .width(28.dp),
                                 tint = Color.White
                             )
-                            Text(text = forecasts[page].overview.tempLow.toString()+"°", style = MaterialTheme.typography.h3)
+                            Text(text = forecasts[page].overview.tempLow.toString() + "°", style = MaterialTheme.typography.h3)
                         }
-
                     }
                     Image(painter = painterResource(id = forecasts[page].overview.weather.icon), contentDescription = null, modifier = Modifier.size(120.dp))
                 }
@@ -263,10 +279,11 @@ fun WeatherPageItem(
                     }
             )
 
-            LazyRow (
+            LazyRow(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
-                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp)){
-                itemsIndexed (forecasts[page].hours) { index, hour ->
+                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp)
+            ) {
+                itemsIndexed(forecasts[page].hours) { index, hour ->
                     HourForecast(
                         hour,
                         index + 1,
@@ -290,15 +307,16 @@ fun HourForecast(
     calendar.add(Calendar.DAY_OF_YEAR, 1)
     val tomorrow = calendar.time
 
-    Column(modifier = Modifier
-        .width(50.dp)
-        .semantics(true) {
-            contentDescription =
-                "${hour.time}, ${hour.weather.text}, ${accessibilityUtils.intToDegrees(hour.temp)}, $position of $size"
-        }
+    Column(
+        modifier = Modifier
+            .width(50.dp)
+            .semantics(true) {
+                contentDescription =
+                    "${hour.time}, ${hour.weather.text}, ${accessibilityUtils.intToDegrees(hour.temp)}, $position of $size"
+            }
     ) {
         Text(
-            text = hour.temp.toString()+"°",
+            text = hour.temp.toString() + "°",
             style = MaterialTheme.typography.body2,
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center

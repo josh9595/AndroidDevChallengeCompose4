@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 @file:Suppress("unused")
 
 package com.example.androiddevchallenge.util
@@ -38,15 +37,8 @@ import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.Measurable
 import androidx.compose.ui.layout.ParentDataModifier
 import androidx.compose.ui.unit.Density
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
-
-/**
- * This is a modified version of:
- * https://gist.github.com/adamp/07d468f4bcfe632670f305ce3734f511
- */
 
 class PagerState(
     currentPage: Int = 0,
@@ -162,8 +154,6 @@ fun Pager(
             },
             onDragStopped = { velocity ->
                 coroutineScope.launch {
-                    // Velocity is in pixels per second, but we deal in percentage offsets, so we
-                    // need to scale the velocity to match
                     state.fling(velocity / pageSize)
                 }
             },
@@ -190,8 +180,6 @@ fun Pager(
                     it.measure(childConstraints) to it.page
                 }
                 .forEach { (placeable, page) ->
-                    // TODO: current this centers each page. We should investigate reading
-                    //  gravity modifiers on the child, or maybe as a param to Pager.
                     val xCenterOffset = (constraints.maxWidth - placeable.width) / 2
                     val yCenterOffset = (constraints.maxHeight - placeable.height) / 2
 
@@ -210,28 +198,16 @@ fun Pager(
     }
 }
 
-/**
- * Scope for [Pager] content.
- */
 class PagerScope(
     private val state: PagerState,
     val page: Int
 ) {
-    /**
-     * Returns the current selected page
-     */
     val currentPage: Int
         get() = state.currentPage
 
-    /**
-     * Returns the current selected page offset
-     */
     val currentPageOffset: Float
         get() = state.currentPageOffset
 
-    /**
-     * Returns the current selection state
-     */
     val selectionState: PagerState.SelectionState
         get() = state.selectionState
 }
