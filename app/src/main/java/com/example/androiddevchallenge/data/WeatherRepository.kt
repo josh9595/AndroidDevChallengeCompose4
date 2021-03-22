@@ -29,7 +29,7 @@ class WeatherRepository {
                 ForecastHour(
                     "06:00",
                     11,
-                    Weather.CLEAR
+                    Weather.CLEAR_NIGHT
                 ),
                 ForecastHour(
                     "07:00",
@@ -99,52 +99,52 @@ class WeatherRepository {
                 ForecastHour(
                     "20:00",
                     15,
-                    Weather.CLEAR
+                    Weather.CLEAR_NIGHT
                 ),
                 ForecastHour(
                     "21:00",
                     14,
-                    Weather.LIGHT_CLOUD
+                    Weather.LIGHT_CLOUD_NIGHT
                 ),
                 ForecastHour(
                     "22:00",
                     14,
-                    Weather.LIGHT_CLOUD
+                    Weather.LIGHT_CLOUD_NIGHT
                 ),
                 ForecastHour(
                     "23:00",
                     13,
-                    Weather.LIGHT_CLOUD
+                    Weather.LIGHT_CLOUD_NIGHT
                 ),
                 ForecastHour(
                     "00:00",
                     13,
-                    Weather.LIGHT_CLOUD
+                    Weather.LIGHT_CLOUD_NIGHT
                 ),
                 ForecastHour(
                     "01:00",
                     13,
-                    Weather.LIGHT_CLOUD
+                    Weather.LIGHT_CLOUD_NIGHT
                 ),
                 ForecastHour(
                     "02:00",
                     13,
-                    Weather.LIGHT_CLOUD
+                    Weather.LIGHT_CLOUD_NIGHT
                 ),
                 ForecastHour(
                     "03:00",
                     13,
-                    Weather.LIGHT_CLOUD
+                    Weather.LIGHT_CLOUD_NIGHT
                 ),
                 ForecastHour(
                     "04:00",
                     12,
-                    Weather.LIGHT_CLOUD
+                    Weather.LIGHT_CLOUD_NIGHT
                 ),
                 ForecastHour(
                     "05:00",
                     12,
-                    Weather.LIGHT_CLOUD
+                    Weather.LIGHT_CLOUD_NIGHT
                 ),
             )
         ),
@@ -291,7 +291,7 @@ class WeatherRepository {
                 ForecastHour(
                     "06:00",
                     19,
-                    Weather.CLEAR
+                    Weather.CLEAR_NIGHT
                 ),
                 ForecastHour(
                     "07:00",
@@ -361,52 +361,52 @@ class WeatherRepository {
                 ForecastHour(
                     "20:00",
                     23,
-                    Weather.LIGHT_CLOUD
+                    Weather.LIGHT_CLOUD_NIGHT
                 ),
                 ForecastHour(
                     "21:00",
                     22,
-                    Weather.CLEAR
+                    Weather.CLEAR_NIGHT
                 ),
                 ForecastHour(
                     "22:00",
                     21,
-                    Weather.CLEAR
+                    Weather.CLEAR_NIGHT
                 ),
                 ForecastHour(
                     "23:00",
                     20,
-                    Weather.CLEAR
+                    Weather.CLEAR_NIGHT
                 ),
                 ForecastHour(
                     "00:00",
                     20,
-                    Weather.CLEAR
+                    Weather.CLEAR_NIGHT
                 ),
                 ForecastHour(
                     "01:00",
                     19,
-                    Weather.CLEAR
+                    Weather.CLEAR_NIGHT
                 ),
                 ForecastHour(
                     "02:00",
                     19,
-                    Weather.CLEAR
+                    Weather.CLEAR_NIGHT
                 ),
                 ForecastHour(
                     "03:00",
                     18,
-                    Weather.CLEAR
+                    Weather.CLEAR_NIGHT
                 ),
                 ForecastHour(
                     "04:00",
                     18,
-                    Weather.CLEAR
+                    Weather.CLEAR_NIGHT
                 ),
                 ForecastHour(
                     "05:00",
                     17,
-                    Weather.LIGHT_CLOUD
+                    Weather.LIGHT_CLOUD_NIGHT
                 ),
             )
         ),
@@ -553,7 +553,7 @@ class WeatherRepository {
                 ForecastHour(
                     "06:00",
                     9,
-                    Weather.SHOWERS
+                    Weather.SHOWERS_NIGHT
                 ),
                 ForecastHour(
                     "07:00",
@@ -815,7 +815,7 @@ class WeatherRepository {
                 ForecastHour(
                     "06:00",
                     7,
-                    Weather.LIGHT_CLOUD
+                    Weather.LIGHT_CLOUD_NIGHT
                 ),
                 ForecastHour(
                     "07:00",
@@ -885,52 +885,52 @@ class WeatherRepository {
                 ForecastHour(
                     "20:00",
                     12,
-                    Weather.LIGHT_CLOUD
+                    Weather.LIGHT_CLOUD_NIGHT
                 ),
                 ForecastHour(
                     "21:00",
                     11,
-                    Weather.LIGHT_CLOUD
+                    Weather.LIGHT_CLOUD_NIGHT
                 ),
                 ForecastHour(
                     "22:00",
                     11,
-                    Weather.LIGHT_CLOUD
+                    Weather.LIGHT_CLOUD_NIGHT
                 ),
                 ForecastHour(
                     "23:00",
                     11,
-                    Weather.CLEAR
+                    Weather.CLEAR_NIGHT
                 ),
                 ForecastHour(
                     "00:00",
                     11,
-                    Weather.CLEAR
+                    Weather.CLEAR_NIGHT
                 ),
                 ForecastHour(
                     "01:00",
                     10,
-                    Weather.CLEAR
+                    Weather.CLEAR_NIGHT
                 ),
                 ForecastHour(
                     "02:00",
                     10,
-                    Weather.CLEAR
+                    Weather.CLEAR_NIGHT
                 ),
                 ForecastHour(
                     "03:00",
                     9,
-                    Weather.CLEAR
+                    Weather.CLEAR_NIGHT
                 ),
                 ForecastHour(
                     "04:00",
                     9,
-                    Weather.CLEAR
+                    Weather.CLEAR_NIGHT
                 ),
                 ForecastHour(
                     "05:00",
                     9,
-                    Weather.CLEAR
+                    Weather.CLEAR_NIGHT
                 ),
             )
         ),
@@ -946,7 +946,7 @@ class WeatherRepository {
                 ForecastHour(
                     "06:00",
                     27,
-                    Weather.LIGHT_CLOUD
+                    Weather.LIGHT_CLOUD_NIGHT
                 ),
                 ForecastHour(
                     "07:00",
@@ -1016,52 +1016,52 @@ class WeatherRepository {
                 ForecastHour(
                     "20:00",
                     30,
-                    Weather.LIGHT_CLOUD
+                    Weather.LIGHT_CLOUD_NIGHT
                 ),
                 ForecastHour(
                     "21:00",
                     29,
-                    Weather.LIGHT_CLOUD
+                    Weather.LIGHT_CLOUD_NIGHT
                 ),
                 ForecastHour(
                     "22:00",
                     29,
-                    Weather.LIGHT_CLOUD
+                    Weather.LIGHT_CLOUD_NIGHT
                 ),
                 ForecastHour(
                     "23:00",
                     29,
-                    Weather.CLEAR
+                    Weather.CLEAR_NIGHT
                 ),
                 ForecastHour(
                     "00:00",
                     29,
-                    Weather.CLEAR
+                    Weather.CLEAR_NIGHT
                 ),
                 ForecastHour(
                     "01:00",
                     29,
-                    Weather.CLEAR
+                    Weather.CLEAR_NIGHT
                 ),
                 ForecastHour(
                     "02:00",
                     28,
-                    Weather.CLEAR
+                    Weather.CLEAR_NIGHT
                 ),
                 ForecastHour(
                     "03:00",
                     28,
-                    Weather.CLEAR
+                    Weather.CLEAR_NIGHT
                 ),
                 ForecastHour(
                     "04:00",
                     28,
-                    Weather.SHOWERS
+                    Weather.SHOWERS_NIGHT
                 ),
                 ForecastHour(
                     "05:00",
                     27,
-                    Weather.SHOWERS
+                    Weather.SHOWERS_NIGHT
                 ),
             )
         ),
@@ -1077,7 +1077,7 @@ class WeatherRepository {
                 ForecastHour(
                     "06:00",
                     -2,
-                    Weather.LIGHT_CLOUD
+                    Weather.LIGHT_CLOUD_NIGHT
                 ),
                 ForecastHour(
                     "07:00",

@@ -16,12 +16,19 @@
 package com.example.androiddevchallenge.util
 
 import android.content.Context
+import android.view.accessibility.AccessibilityManager
 import com.example.androiddevchallenge.R
 import com.example.androiddevchallenge.data.Forecast
 import com.example.androiddevchallenge.data.ForecastHour
-import com.example.androiddevchallenge.data.Weather
+import java.util.Collections
 
 class AccessibilityUtils(private val context: Context) {
+
+    fun screenReaderEnabled(): Boolean {
+        val am = context.getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager
+        return am.isTouchExplorationEnabled
+    }
+
     fun buildForecastOverview(
         forecast: Forecast,
         date: String
@@ -33,7 +40,7 @@ class AccessibilityUtils(private val context: Context) {
             forecast.overview.tempLow.toString()
         )
         val weatherString = context.getString(R.string.a11y_forecast_weather, forecast.overview.weather.text)
-        val weatherExtraString = calculateWeatherExtraString(forecast.hours)
+        val weatherExtraString = calculateWeatherExtraString(forecast.overview.weather.text, forecast.hours)
 
         return "$temperatureString $weatherString $weatherExtraString"
     }
@@ -41,21 +48,25 @@ class AccessibilityUtils(private val context: Context) {
     fun intToDegrees(temp: Int): String = context.getString(R.string.a11y_forecast_degrees, temp.toString())
 
     private fun calculateWeatherExtraString(overviewForecast: String, hours: List<ForecastHour>): String {
-        var list = mutableListOf(
-            Pair(Weather.CLEAR, 0),
-            Pair(Weather.LIGHT_CLOUD, 0),
-            Pair(Weather.HEAVY_CLOUD, 0),
-            Pair(Weather.SHOWERS, 0),
-            Pair(Weather.LIGHT_RAIN, 0),
-            Pair(Weather.HEAVY_RAIN, 0),
-            Pair(Weather.THUNDERSTORM, 0),
-            Pair(Weather.HAIL, 0),
-            Pair(Weather.SLEET, 0),
-            Pair(Weather.SNOW, 0)
-        )
-//        hours.forEach { hour ->
-//            list.find { it.first ==  hour.weather }.second++
-//        }
-        return context.getString(R.string.a11y_forecast_weather_same)
+        val list: MutableList<String> = mutableListOf()
+        hours.forEach { hour ->
+            list.add(hour.weather.text)
+        }
+
+        var mostCommon = ""
+        var mostCommonCount = 0
+
+        for (weather in list.distinct()) {
+            if (Collections.frequency(list, weather) > mostCommonCount) {
+                mostCommon = weather
+                mostCommonCount = Collections.frequency(list, weather)
+            }
+        }
+
+        return if (mostCommon == overviewForecast) {
+            context.getString(R.string.a11y_forecast_weather_same)
+        } else {
+            context.getString(R.string.a11y_forecast_weather_change, mostCommon)
+        }
     }
 }

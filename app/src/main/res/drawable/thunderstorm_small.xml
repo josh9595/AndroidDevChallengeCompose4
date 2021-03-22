@@ -10,7 +10,7 @@
       android:strokeColor="#000000"
       android:fillType="evenOdd"/>
   <path
-      android:pathData="M36,34L32.5,37"
+      android:pathData="M36,35L32.0152,38.9848"
       android:strokeAlpha="0.6499399"
       android:strokeWidth="2"
       android:fillColor="#00000000"
@@ -18,7 +18,7 @@
       android:fillType="evenOdd"
       android:strokeLineCap="square"/>
   <path
-      android:pathData="M11.5,34L8,37"
+      android:pathData="M11.5,35L7.5152,38.9848"
       android:strokeAlpha="0.6499399"
       android:strokeWidth="2"
       android:fillColor="#00000000"

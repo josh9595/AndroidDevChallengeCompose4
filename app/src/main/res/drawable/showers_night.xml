@@ -49,4 +49,11 @@
       android:strokeColor="#FFFFFF"
       android:fillType="evenOdd"
       android:strokeLineCap="square"/>
+  <path
+      android:pathData="M92.856,39.538C94.806,37.761 95.601,36.752 95.242,36.509C93.03,35.267 85.464,36.16 79.229,25.453C72.994,14.747 80.088,2.746 79.229,2.689C75.637,2.449 71.973,3.185 68.476,4.804C57.5,9.886 52,25 60.597,36.714"
+      android:strokeWidth="3"
+      android:fillColor="#00000000"
+      android:strokeColor="#FFFFFF"
+      android:fillType="evenOdd"
+      android:strokeLineCap="round"/>
 </vector>

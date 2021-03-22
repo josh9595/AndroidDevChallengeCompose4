@@ -27,7 +27,7 @@ import com.example.androiddevchallenge.ui.theme.showersBackground
 import com.example.androiddevchallenge.ui.theme.sleetBackground
 import com.example.androiddevchallenge.ui.theme.snowBackground
 import com.example.androiddevchallenge.ui.theme.thunderstormBackground
-import java.util.*
+import java.util.Date
 
 data class Forecast(
     val name: String,
@@ -56,9 +56,12 @@ data class ForecastHour(
 
 enum class Weather(val text: String, val colour: Color, val graphic: Int, val icon: Int, val iconSmall: Int) {
     CLEAR("Clear", clearBackground, R.drawable.clear_graphic, R.drawable.clear, R.drawable.clear_small),
+    CLEAR_NIGHT("Clear", clearBackground, R.drawable.clear_graphic, R.drawable.clear_night, R.drawable.clear_night_small),
     LIGHT_CLOUD("Light Cloud", lightCloudBackground, R.drawable.light_cloud_graphic, R.drawable.light_cloud, R.drawable.light_cloud_small),
+    LIGHT_CLOUD_NIGHT("Light Cloud", lightCloudBackground, R.drawable.light_cloud_graphic, R.drawable.light_cloud_night, R.drawable.light_cloud_night_small),
     HEAVY_CLOUD("Heavy Cloud", heavyCloudBackground, R.drawable.heavy_cloud_graphic, R.drawable.heavy_cloud, R.drawable.heavy_cloud_small),
     SHOWERS("Showers", showersBackground, R.drawable.showers_graphic, R.drawable.showers, R.drawable.showers_small),
+    SHOWERS_NIGHT("Showers", showersBackground, R.drawable.showers_graphic, R.drawable.showers_night, R.drawable.showers_night_small),
     LIGHT_RAIN("Light Rain", lightRainBackground, R.drawable.light_rain_graphic, R.drawable.light_rain, R.drawable.light_rain_small),
     HEAVY_RAIN("Heavy Rain", heavyRainBackground, R.drawable.heavy_rain_graphic, R.drawable.heavy_rain, R.drawable.heavy_rain_small),
     THUNDERSTORM("Thunderstorms", thunderstormBackground, R.drawable.thunderstorm_graphic, R.drawable.thunderstorm, R.drawable.thunderstorm_small),

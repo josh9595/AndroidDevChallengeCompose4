@@ -19,13 +19,11 @@ import android.os.Bundle
 import android.text.format.DateFormat
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.animation.animateColor
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.animateValue
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.spring
@@ -57,20 +55,23 @@ import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.material.icons.filled.ChevronLeft
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale.Companion.FillWidth
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import androidx.core.view.WindowCompat
-import androidx.compose.runtime.getValue
 import com.example.androiddevchallenge.data.Forecast
 import com.example.androiddevchallenge.data.ForecastHour
 import com.example.androiddevchallenge.data.WeatherRepository
@@ -108,11 +109,8 @@ class MainActivity : AppCompatActivity() {
 @Composable
 fun MyApp(
     forecasts: List<Forecast>,
-    accessibilityUtils: AccessibilityUtils,
-    weatherViewModel: WeatherViewModel = WeatherViewModel()
+    accessibilityUtils: AccessibilityUtils
 ) {
-    weatherViewModel.initLists(forecasts.size)
-
     val pagerState = remember { PagerState() }
     val coroutineScope = rememberCoroutineScope()
 
@@ -121,7 +119,7 @@ fun MyApp(
     val infiniteTransition = rememberInfiniteTransition()
     val paddingAnim by infiniteTransition.animateFloat(
         initialValue = 0f,
-        targetValue = 32f,
+        targetValue = if (accessibilityUtils.screenReaderEnabled()) 0f else 32f,
         animationSpec = infiniteRepeatable(
             animation = tween(5000, easing = LinearEasing),
             repeatMode = RepeatMode.Reverse
@@ -137,35 +135,11 @@ fun MyApp(
         ).value
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.BottomCenter
+            Row(
+                modifier = Modifier
+                    .padding(0.dp, 32.dp, 0.dp, 0.dp)
+                    .zIndex(2f)
             ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(160.dp)
-                        .background(
-                            seaColor
-                        )
-                ) {
-                }
-                Pager(
-                    state = pagerState,
-                    modifier = Modifier
-                        .fillMaxSize()
-                ) {
-                    WeatherPageItem(
-                        pagerState,
-                        page,
-                        forecasts,
-                        paddingAnim,
-                        accessibilityUtils
-                    )
-                }
-            }
-
-            Row(modifier = Modifier.padding(0.dp, 32.dp, 0.dp, 0.dp)) {
                 if (pagerState.currentPage != 0) {
                     IconButton(
                         onClick = {
@@ -194,7 +168,9 @@ fun MyApp(
                         .semantics {
                             contentDescription =
                                 "Forecast for ${forecasts[pagerState.currentPage].name}"
-                        },
+                            heading()
+                        }
+                        .focusModifier(),
                     textAlign = TextAlign.Center
                 )
                 if (pagerState.currentPage != forecasts.size - 1) {
@@ -218,13 +194,39 @@ fun MyApp(
                     Spacer(Modifier.width(48.dp))
                 }
             }
+
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.BottomCenter
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(160.dp)
+                        .background(
+                            seaColor
+                        )
+                ) {
+                }
+                Pager(
+                    state = pagerState,
+                    modifier = Modifier
+                        .fillMaxSize()
+                ) {
+                    WeatherPageItem(
+                        page,
+                        forecasts,
+                        paddingAnim,
+                        accessibilityUtils
+                    )
+                }
+            }
         }
     }
 }
 
 @Composable
 fun WeatherPageItem(
-    pagerState: PagerState,
     page: Int,
     forecasts: List<Forecast>,
     paddingAnim: Float,
@@ -291,7 +293,13 @@ fun WeatherPageItem(
                             Text(text = forecasts[page].overview.tempLow.toString() + "°", style = MaterialTheme.typography.h3)
                         }
                     }
-                    Image(painter = painterResource(id = forecasts[page].overview.weather.icon), contentDescription = null, modifier = Modifier.size(120.dp))
+                    Image(
+                        painter = painterResource(id = forecasts[page].overview.weather.icon),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(120.dp)
+                            .padding(0.dp, 16.dp, 0.dp, 0.dp)
+                    )
                 }
             }
 
@@ -349,7 +357,7 @@ fun HourForecast(
         Image(
             painter = painterResource(id = hour.weather.iconSmall),
             contentDescription = null,
-            modifier = Modifier.width(50.dp)
+            modifier = Modifier.height(50.dp)
         )
         Text(
             text = hour.time,
