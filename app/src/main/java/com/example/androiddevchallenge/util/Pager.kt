@@ -110,9 +110,6 @@ class PagerState(
         snapToOffset(0f)
         selectionState = SelectionState.Selected
     }
-
-    override fun toString(): String = "PagerState{minPage=$minPage, maxPage=$maxPage, " +
-        "currentPage=$currentPage, currentPageOffset=$currentPageOffset}"
 }
 
 @Immutable
